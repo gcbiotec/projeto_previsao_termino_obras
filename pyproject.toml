@@ -1,0 +1,11 @@
+[project]
+name = "previsao-termino-obras"
+version = "0.1.0"
+description = "Modelos para previsão de término de obras novas e em andamento"
+requires-python = ">=3.10"
+
+[tool.black]
+line-length = 88
+
+[tool.ruff]
+line-length = 88

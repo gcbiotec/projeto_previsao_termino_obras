@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.py[cod]
+.vscode/*.log
+data/raw/*.csv
+data/processed/*.csv
+data/outputs/*.csv
+artifacts/models/*.joblib
+artifacts/metrics/*.json
+!.gitkeep

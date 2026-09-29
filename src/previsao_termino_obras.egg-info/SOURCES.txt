@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/__init__.py
+src/config.py
+src/main.py
+src/data/__init__.py
+src/data/preparation.py
+src/data/validation.py
+src/models/__init__.py
+src/models/factory.py
+src/models/prediction.py
+src/models/training.py
+src/previsao_termino_obras.egg-info/PKG-INFO
+src/previsao_termino_obras.egg-info/SOURCES.txt
+src/previsao_termino_obras.egg-info/dependency_links.txt
+src/previsao_termino_obras.egg-info/top_level.txt
+tests/test_validation.py

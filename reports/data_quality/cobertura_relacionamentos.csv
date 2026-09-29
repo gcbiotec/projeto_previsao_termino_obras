@@ -1,0 +1,5 @@
+﻿relacao,ids_origem,ids_correspondentes,cobertura_pct
+parcelas -> contratos,379,78,20.58
+liberacoes -> contratos,372,77,20.7
+aditivos valor -> contratos,86,59,68.6
+aditivos prazo -> contratos,107,51,47.66
