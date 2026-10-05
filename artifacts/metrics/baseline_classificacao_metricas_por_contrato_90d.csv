@@ -1,0 +1,2 @@
+﻿horizonte_referencia_dias,contratos,accuracy,balanced_accuracy,precision,recall,f1,brier,roc_auc,pr_auc
+90,9,0.3333333333333333,0.375,0.375,0.75,0.5,0.2871015776757109,0.5,0.6349206349206349
