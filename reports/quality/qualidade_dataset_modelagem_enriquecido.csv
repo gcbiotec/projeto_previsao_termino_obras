@@ -1,0 +1,17 @@
+﻿metrica,valor
+contratos,48
+contratos_com_atraso,20
+contratos_sem_atraso,28
+taxa_atraso_contratos,0.4166666666666667
+snapshots,633
+snapshots_aptos_treino,585
+snapshots_aptos_classificacao,509
+contratos_aptos_treino,48
+colunas_dataset,109
+features_candidatas,90
+data_conclusao_min,2018-11-06 00:00:00
+data_conclusao_max,2026-02-10 00:00:00
+target_dias_media,32.333333333333336
+target_dias_mediana,0.0
+target_dias_max,380.0
+contratos_revisao_semantica,1

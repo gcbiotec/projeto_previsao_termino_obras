@@ -1,0 +1,13 @@
+﻿metrica,valor
+contratos_depurados,45
+snapshots,587
+snapshots_aptos_treino,542
+contratos_aptos_treino,45
+contratos_com_atraso,17
+contratos_sem_atraso,28
+taxa_atraso_contratos,0.37777777777777777
+mediana_target_dias_contratos,0.0
+media_target_dias_contratos,20.6
+data_conclusao_min,2019-12-02 00:00:00
+data_conclusao_max,2026-02-10 00:00:00
+duplicidades_id_data,0
