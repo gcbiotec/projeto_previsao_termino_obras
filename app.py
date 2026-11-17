@@ -541,12 +541,13 @@ with aba_real:
 
             ## st.divider()
             ## st.markdown("##### Volte no tempo e confira a previsão")
-            
+
             dia = 0 
             # (
             #     st.slider("Dia da obra em que a previsão é feita (0 = dia da OS)", 0, dur - 1, 0, key=f"real_dia_{escolhido}")
             #     if dur > 1 else 0
             # )
+            
             data_previsao = pd.Timestamp(data_os) + pd.Timedelta(days=dia)
             # tipo_modelo = st.radio(
             #     "Modelo usado na previsão",
