@@ -1,8 +1,7 @@
 """Núcleo do modelo AFT Log-Normal (portado do notebook 13C).
 
 Sem dependência de scikit-learn: só numpy, pandas e scipy.
-A lógica de classificação dos contratos, o target relativo e a validação
-temporal seguem exatamente o notebook ``13C_target_relativo_dados_reais``.
+
 """
 from __future__ import annotations
 
@@ -19,7 +18,7 @@ ALPHAS = [0.1, 1.0, 10.0, 100.0]
 
 # Marcos de probabilidade: dias DEPOIS do prazo de referência (0 = no próprio prazo).
 VERSAO_NUCLEO = "2026-11-13"  # o app usa isto para invalidar o cache quando o núcleo muda
-MARCOS_DIAS = (0, 30, 60)
+MARCOS_DIAS = (0, 30, 60, 120, 150, 180)
 MARCOS_LONGOS_DIAS = (120, 150, 180)  # segunda régua de faixas: dias depois do prazo de referência
 
 # Mínimo de obras concluídas para ajustar o "modelo da época" (verificação em contratos reais).

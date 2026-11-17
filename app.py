@@ -26,7 +26,7 @@ TEXTO_FAIXAS = ["#0b0b0b", "#ffffff", "#ffffff", "#ffffff"]   # rótulo dentro d
 COR_REFERENCIA = "#898781"                                    # linhas de referência e rótulos (neutro)
 COR_DESTAQUE = "#eb6834"                                      # o resultado real
 
-st.set_page_config(page_title="Previsão de término de obras", page_icon="🏗️", layout="wide")
+st.set_page_config(page_title="Previsão de término de obras", layout="wide")
 
 # Garante que o app e o núcleo são da mesma versão (evita um KeyError difícil de entender após um deploy parcial).
 VERSAO_ESPERADA = "2026-11-13"
@@ -242,12 +242,12 @@ def painel_previsao(modelo, data_os, prazo, vigente, decorridos, real_dias=None)
     p = core.previsao_contrato(modelo, prazo, decorridos, vigente_dias, MARCOS)
     adit = int(round(vigente_dias - prazo)) if p["vigente"] else 0
 
-    st.markdown("##### Probabilidade de a obra terminar…")
+    st.markdown("##### Probabilidade de a obra terminar:")
     if p["vigente"]:
-        st.caption("**Contados do prazo original**")
+        st.markdown("**No prazo original**")
     linha_marcos(p["original"], data_os, decorridos, titulo_marco)
     if p["vigente"]:
-        st.caption(f"**Contados do prazo aditivado** (prazo original + {adit} dias de aditivo)")
+        st.markdown(f"**No prazo aditivado** (prazo original + {adit} dias de aditivo)")
         linha_marcos(p["vigente"], data_os, decorridos, titulo_marco_adit)
 
     ref = [("Prazo original", p["original"] + p["original_longo"])]
@@ -271,30 +271,30 @@ def painel_previsao(modelo, data_os, prazo, vigente, decorridos, real_dias=None)
                 min_value=0, max_value=1, format="percent")},
         )
 
-    st.markdown("##### Em que faixa a obra deve terminar?")
-    st.caption("As faixas são excludentes e somam 100%. Faixas mais escuras = término mais tardio. "
-               "Cada régua conta os dias depois do prazo indicado.")
-    blocos = [("Prazo original", p["faixas"], p["faixas_longas"])]
-    if p["vigente"]:
-        blocos.append(("Prazo aditivado", p["faixas_vigente"], p["faixas_longas_vigente"]))
-    for nome, curtas, longas in blocos:
-        st.markdown(f"**{nome}**")
-        st.caption("Faixas curtas: até o prazo, 30 e 60 dias depois")
-        st.altair_chart(grafico_faixas(curtas))
-        st.caption("Faixas longas: até 120, 150 e 180 dias depois, e mais que isso")
-        st.altair_chart(grafico_faixas(longas))
+    # st.markdown("##### Em que faixa a obra deve terminar?")
+    # st.caption("As faixas são excludentes e somam 100%. Faixas mais escuras = término mais tardio. "
+    #            "Cada régua conta os dias depois do prazo indicado.")
+    # blocos = [("Prazo original", p["faixas"], p["faixas_longas"])]
+    # if p["vigente"]:
+    #     blocos.append(("Prazo aditivado", p["faixas_vigente"], p["faixas_longas_vigente"]))
+    # for nome, curtas, longas in blocos:
+    #     st.markdown(f"**{nome}**")
+    #     st.caption("Faixas curtas: até o prazo, 30 e 60 dias depois")
+    #     st.altair_chart(grafico_faixas(curtas))
+    #     st.caption("Faixas longas: até 120, 150 e 180 dias depois, e mais que isso")
+    #     st.altair_chart(grafico_faixas(longas))
 
     q = p["quantis"]
     st.markdown("##### Quando deve terminar")
     m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Duração P50 (mediana)", fmt_dias(q["p50"]), help="50% de chance de a obra terminar até aqui (dias contados da OS).")
+    m1.metric("Duração (mediana)", fmt_dias(q["p50"]), help="50% de chance de a obra terminar até aqui (dias contados da OS).")
     m1.caption(f"{q['p50'] / prazo:.2f}× o prazo original")
-    m2.metric("Término P50 (mediana)", fmt_data(soma_dias(data_os, q["p50"])))
-    m3.metric("Término P80 (pessimista)", fmt_data(soma_dias(data_os, q["p80"])), help="80% de chance de terminar até esta data.")
-    m4.metric(
-        "Prob. de passar do prazo aditivado" if p["vigente"] else "Prob. de passar do prazo",
-        fmt_pct(p["prob_estourar_vigente"]),
-    )
+    m2.metric("Término (mediana)", fmt_data(soma_dias(data_os, q["p50"])))
+    m3.metric("Término (pessimista)", fmt_data(soma_dias(data_os, q["p80"])), help="80% de chance de terminar até esta data.")
+    # m4.metric(
+    #     "Prob. de passar do prazo aditivado" if p["vigente"] else "Prob. de passar do prazo",
+    #     fmt_pct(p["prob_estourar_vigente"]),
+    # )
     st.caption(
         f"Faixa central de 80%: entre **{fmt_data(soma_dias(data_os, q['p10']))}** e "
         f"**{fmt_data(soma_dias(data_os, q['p90']))}** ({q['p10']:.0f} a {q['p90']:.0f} dias após a OS). "
@@ -366,7 +366,7 @@ if not modelo.convergiu:
     st.warning("O otimizador não convergiu. Revise os dados antes de usar os resultados.")
 
 aba_sim, aba_real, aba_and, aba_sobre = st.tabs(
-    ["🔮 Simulador", "🔎 Contratos reais", "📋 Contratos em andamento", "ℹ️ Sobre"]
+    ["Simulador", "Contratos reais", "Contratos em andamento", "Sobre"]
 )
 
 # --------------------------------------------------------------------------- #
@@ -418,7 +418,7 @@ with aba_sim:
         r2.metric("Aditivos de prazo", f"+{total_adit} dias" if total_adit else "Nenhum")
         r3.metric("Término aditivado", fmt_data(soma_dias(data_os_sim, vigente)), help="Término original + aditivos.")
         r3.caption(f"{vigente} dias de prazo")
-        r4.metric("Hoje", f"dia {decorridos}", help="Dias desde a OS até a data de referência.")
+        r4.metric("Dias até hoje", f"dia {decorridos}", help="Dias desde a OS até a data de referência.")
         r4.caption(f"{100 * decorridos / prazo:.0f}% do prazo original")
 
         if decorridos >= vigente:
@@ -539,20 +539,22 @@ with aba_real:
             if conclusao > pd.Timestamp(data_corte):
                 st.warning("A data de conclusão registrada é posterior à data de corte.")
 
-            st.divider()
-            st.markdown("##### Volte no tempo e confira a previsão")
-            dia = (
-                st.slider("Dia da obra em que a previsão é feita (0 = dia da OS)", 0, dur - 1, 0, key=f"real_dia_{escolhido}")
-                if dur > 1 else 0
-            )
+            ## st.divider()
+            ## st.markdown("##### Volte no tempo e confira a previsão")
+            dia = 0 
+            # (
+            #     st.slider("Dia da obra em que a previsão é feita (0 = dia da OS)", 0, dur - 1, 0, key=f"real_dia_{escolhido}")
+            #     if dur > 1 else 0
+            # )
             data_previsao = pd.Timestamp(data_os) + pd.Timedelta(days=dia)
-            tipo_modelo = st.radio(
-                "Modelo usado na previsão",
-                ["Modelo da época (só o que se sabia naquele dia)", "Modelo atual (já viu o desfecho desta obra)"],
-                key="real_modelo",
-                help="O modelo da época é a verificação honesta: não conhece contratos concluídos depois daquela data. "
-                     "O modelo atual já foi treinado com este contrato e tende a parecer melhor do que realmente seria.",
-            )
+            # tipo_modelo = st.radio(
+            #     "Modelo usado na previsão",
+            #     ["Modelo da época (só o que se sabia naquele dia)", "Modelo atual (já viu o desfecho desta obra)"],
+            #     key="real_modelo",
+            #     help="O modelo da época é a verificação honesta: não conhece contratos concluídos depois daquela data. "
+            #          "O modelo atual já foi treinado com este contrato e tende a parecer melhor do que realmente seria.",
+            # )
+            tipo_modelo = "Modelo da época"
             m_uso = modelo
             if tipo_modelo.startswith("Modelo da época"):
                 m_ep, info = modelo_da_epoca(df_prep, data_previsao.date(), alpha, core.VERSAO_NUCLEO)
@@ -574,8 +576,8 @@ with aba_real:
             p = painel_previsao(m_uso, data_os, prazo_c, None, dia, real_dias=dur)
 
             # --- Previsão × realidade ------------------------------------------------
-            st.divider()
-            st.markdown("##### Previsão × realidade")
+            ## st.divider()
+            ## st.markdown("##### Previsão × realidade")
             q = p["quantis"]
             atraso = (pd.Timestamp(conclusao) - soma_dias(data_os, prazo_c)).days
             i_faixa = core.faixa_do_atraso(atraso, MARCOS)
@@ -586,21 +588,21 @@ with aba_real:
             v1, v2, v3, v4 = st.columns(4)
             v1.metric("Término real", fmt_data(conclusao))
             v1.caption(f"{dur} dias após a OS")
-            v2.metric("Previsão P50", fmt_data(soma_dias(data_os, q["p50"])))
+            v2.metric("Previsão Mediana (50%)", fmt_data(soma_dias(data_os, q["p50"])))
             v2.caption(f"a obra terminou {n_dias(dur - q['p50'])} {'depois' if dur > q['p50'] else 'antes'} do P50")
             v3.metric("Dentro da faixa de 80%?", "Sim" if dentro else "Não",
                       help="Faixa central entre P10 e P90 da previsão.")
             v3.caption(f"{fmt_data(soma_dias(data_os, q['p10']))} a {fmt_data(soma_dias(data_os, q['p90']))}")
-            v4.metric("Chance dada à data real", fmt_pct(prob_real),
-                      help="Probabilidade que o modelo dava de a obra terminar até a data em que de fato terminou. "
-                           "Perto de 50% = acertou o centro; perto de 0% ou 100% = errou para um lado.")
-            v4.caption("de terminar até essa data")
+            # v4.metric("Chance dada à data real", fmt_pct(prob_real),
+            #           help="Probabilidade que o modelo dava de a obra terminar até a data em que de fato terminou. "
+            #                "Perto de 50% = acertou o centro; perto de 0% ou 100% = errou para um lado.")
+            # v4.caption("de terminar até essa data")
 
             posicao = (f"{n_dias(atraso)} {'depois' if atraso > 0 else 'antes'} do prazo original"
                        if atraso != 0 else "exatamente no prazo original")
             st.markdown(
                 f"A obra terminou **{posicao}** → faixa **{nome_faixa}**. "
-                f"O modelo dava **{fmt_pct(prob_faixa)}** para essa faixa."
+                # f"O modelo dava **{fmt_pct(prob_faixa)}** para essa faixa."
             )
             if adit_c:
                 st.caption(
