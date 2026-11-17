@@ -73,6 +73,7 @@ def preparar_contratos(contratos: pd.DataFrame, data_corte) -> pd.DataFrame:
         ["CONCLUIDO_COM_TARGET", "SUSPENSO_PARALISADO"],
         default="EM_ANDAMENTO_CENSURADO",
     )
+    
     df["evento_conclusao"] = concluido.astype(int)
 
     # Linhas sem data de OS ou sem prazo válido não conseguem entrar no modelo.
